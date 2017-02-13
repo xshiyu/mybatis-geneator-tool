@@ -2,7 +2,7 @@
 ## 介绍
 - 可通过此工具自动生成Mybatis XML文件和dao的class类
 - 可结合BaseDao完成基础操作，BaseDao支持的方法如下
-<pre>
+```java
 public interface BaseDao<T> {
 	//根据实体对象新增记录
 	long insert(T entity);
@@ -25,7 +25,7 @@ public interface BaseDao<T> {
 	T getBy(Map<String, Object> paramMap);
 	T getBy(Map<String, Object> paramMap, String sqlId);
 }
-</pre>
+```
 
 ## Quick start
 1、编写实体
