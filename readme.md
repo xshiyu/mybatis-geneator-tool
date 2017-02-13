@@ -1,38 +1,38 @@
 # mybatis-geneator-tool
-## ½éÉÜ
-- ¿ÉÍ¨¹ı´Ë¹¤¾ß×Ô¶¯Éú³ÉMybatis XMLÎÄ¼şºÍdaoµÄclassÀà
-- ¿É½áºÏBaseDaoÍê³É»ù´¡²Ù×÷£¬BaseDaoÖ§³ÖµÄ·½·¨ÈçÏÂ
+## ä»‹ç»
+- å¯é€šè¿‡æ­¤å·¥å…·è‡ªåŠ¨ç”ŸæˆMybatis XMLæ–‡ä»¶å’Œdaoçš„classç±»
+- å¯ç»“åˆBaseDaoå®ŒæˆåŸºç¡€æ“ä½œï¼ŒBaseDaoæ”¯æŒçš„æ–¹æ³•å¦‚ä¸‹
 ```java
 public interface BaseDao<T> {
-	//¸ù¾İÊµÌå¶ÔÏóĞÂÔö¼ÇÂ¼
+	//æ ¹æ®å®ä½“å¯¹è±¡æ–°å¢è®°å½•
 	long insert(T entity);
-	//ÅúÁ¿±£´æ¶ÔÏó
+	//æ‰¹é‡ä¿å­˜å¯¹è±¡
 	long insert(List<T> list);
-	//¸üĞÂÊµÌå¶ÔÓ¦µÄ¼ÇÂ¼
+	//æ›´æ–°å®ä½“å¯¹åº”çš„è®°å½•
 	long update(T entity);
-	//¸ù¾İID²éÕÒ¼ÇÂ¼
+	//æ ¹æ®IDæŸ¥æ‰¾è®°å½•
 	T getById(long id);
-	//¸ù¾İIDÉ¾³ı¼ÇÂ¼
+	//æ ¹æ®IDåˆ é™¤è®°å½•
 	int deleteById(long id);
-	//·ÖÒ³²éÑ¯
+	//åˆ†é¡µæŸ¥è¯¢
 	PageBean<T> listPage(PageParam pageParam, Map<String, Object> paramMap);
-	//¸ù¾İÌõ¼ş·ÖÒ³²éÑ¯
+	//æ ¹æ®æ¡ä»¶åˆ†é¡µæŸ¥è¯¢
 	PageBean<T> listPage(PageParam pageParam, Map<String, Object> paramMap, String sqlId);
-	//¸ù¾İÌõ¼ş²éÑ¯£¬·µ»ØÁĞ±í
+	//æ ¹æ®æ¡ä»¶æŸ¥è¯¢ï¼Œè¿”å›åˆ—è¡¨
 	List<T> listBy(Map<String, Object> paramMap);
 	List<T> listBy(Map<String, Object> paramMap, String sqlId);
-	//¸ù¾İÌõ¼ş²éÑ¯·µ»Øµ¥¸ö¶ÔÏó
+	//æ ¹æ®æ¡ä»¶æŸ¥è¯¢è¿”å›å•ä¸ªå¯¹è±¡
 	T getBy(Map<String, Object> paramMap);
 	T getBy(Map<String, Object> paramMap, String sqlId);
 }
 ```
 
 ## Quick start
-1¡¢±àĞ´ÊµÌå
+1ã€ç¼–å†™å®ä½“
 
-2¡¢ÔÚMain·½·¨ÖĞÖ¸¶¨ÊµÌåÀàclass¡¢±íÃû
+2ã€åœ¨Mainæ–¹æ³•ä¸­æŒ‡å®šå®ä½“ç±»classã€è¡¨å
 
-3¡¢ÔËĞĞmain·½·¨
+3ã€è¿è¡Œmainæ–¹æ³•
 
-## ºóÆÚ¼Æ»®
-1¡¢ÅäÖÃJDBC£¬×Ô¶¯Á¬½Óµ½mysql£¬Éú³ÉÊµÌå¡¢dao¡¢XML MapperÎÄ¼ş
+## åæœŸè®¡åˆ’
+1ã€é…ç½®JDBCï¼Œè‡ªåŠ¨è¿æ¥åˆ°mysqlï¼Œç”Ÿæˆå®ä½“ã€daoã€XML Mapperæ–‡ä»¶
