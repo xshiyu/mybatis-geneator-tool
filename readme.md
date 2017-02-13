@@ -29,7 +29,9 @@ public interface BaseDao<T> {
 
 ## Quick start
 1、编写实体
+
 2、在Main方法中指定实体类class、表名
+
 3、运行main方法
 
 ## 后期计划
