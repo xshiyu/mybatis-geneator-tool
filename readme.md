@@ -26,3 +26,11 @@ public interface BaseDao<T> {
 	T getBy(Map<String, Object> paramMap, String sqlId);
 }
 </pre>
+
+## Quick start
+1、编写实体
+2、在Main方法中指定实体类class、表名
+3、运行main方法
+
+## 后期计划
+1、配置JDBC，自动连接到mysql，生成实体、dao、XML Mapper文件
