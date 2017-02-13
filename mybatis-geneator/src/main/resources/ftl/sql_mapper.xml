@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${module.namespace}">
+
+	<!-- 表名 -->
+	<sql id="table">${module.tableName}</sql>
+	
+	<!-- 列名 -->
+	<sql id="columns_sql" >
+    	id,version,createTime,${module.tableColumns}
+  	</sql>
+
+	<!-- 条件查询 -->
+	<sql id="condition_sql">
+  		<where>
+  		<#assign keys=module.propMap?keys>
+		<#list keys as key>
+			<if test="${key} != null and ${key} != ''">
+				AND ${module.propMap[key]} = ${"#"}{${key}}
+			</if> 
+		</#list>
+  		</where>
+  	</sql>
+  	
+  	<!-- 新增 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="${module.className}">  
+    	INSERT INTO 
+    	<include refid="table" />
+    	(version,createTime,${module.tableColumns})  
+    	VALUES(0,NOW(),${module.tableValues})
+	</insert> 
+	
+	<!-- 批量保存对象 -->
+	<insert id="batchInsert" parameterType="${module.className}">
+		INSERT INTO	<include refid="table" />
+		(version,createTime,updateTime,${module.tableColumns})
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(0,NOW(),${module.tableValuesItem})
+		</foreach>
+	</insert> 
+	
+	<!-- 修改 -->
+	<update id="update" parameterType="${module.className}" >
+	    UPDATE ${module.tableName}   
+	    <set>
+	    <#assign keys=module.propMap?keys>
+		<#list keys as key>
+		<if test="${key} != null and ${key} != ''">
+			${module.propMap[key]} = ${"#"}{${key}},
+		</if> 
+		</#list>
+			VERSION = ${"#"}{version} + 1
+	    </set> 
+	    WHERE id = ${"#"}{id} AND version = ${"#"}{version}
+  	</update>
+  	
+  	<!-- 删除 -->
+	<delete id="deleteById" parameterType="long">
+     	DELETE FROM <include refid="table" /> WHERE id = ${"#"}{id}
+  	</delete>
+  	
+    <!-- 根据Id查询 -->
+	<select id="getById" parameterType="long" resultType="${module.className}">
+		SELECT * FROM <include refid="table" /> WHERE id = ${"#"}{id}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="listBy" parameterType="map" resultType="${module.className}">
+		SELECT
+		<include refid="columns_sql" />
+		FROM <include refid="table" />
+		<include refid="condition_sql"/>
+		<if test="direction != null and direction != '' and propertie != null and propertie != ''">
+			ORDER BY ${"#"}{propertie} ${"#"}{direction}
+		</if>
+		<if test="offset != null and offset != '' and pageSize != null and pageSize != ''">
+			LIMIT ${"#"}{offset}, ${"#"}{pageSize}
+		</if>
+	</select>
+  	
+  	<!-- 总数 -->
+  	<select id="countByPageParam" parameterType="map" resultType="${module.className}">
+		SELECT
+			COUNT(1)
+		FROM <include refid="table" />
+		<include refid="condition_sql"/>
+	</select>
+	
+	<!-- ========== 基础SQL 结束 =========== -->
+	
+</mapper> 

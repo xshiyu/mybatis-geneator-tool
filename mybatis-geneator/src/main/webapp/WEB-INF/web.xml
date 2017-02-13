@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xmlns="http://java.sun.com/xml/ns/javaee" 
+     xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+     version="3.0">
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+			classpath*:spring-context.xml
+	</param-value>
+  </context-param>
+   <!-- maven jetty plugin + windows-static-files-no-lock -->
+  <context-param>
+  	<param-name>org.eclipse.jetty.servlet.Default.useFileMappedBuffer</param-name>
+  	<param-value>false</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>org.mortbay.jetty.servlet.Default.useFileMappedBuffer</param-name>
+  	<param-value>false</param-value>
+  </context-param>
+  
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+  
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>springServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring-mvc.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+    <async-supported>true</async-supported>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+  <session-config>
+	 <session-timeout>1000</session-timeout>
+	 <cookie-config>
+	    <name>TF56WTMS</name>
+	    <http-only>true</http-only>
+	 </cookie-config>
+  </session-config>
+   -->
+  
+</web-app>
