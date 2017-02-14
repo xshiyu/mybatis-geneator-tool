@@ -7,7 +7,7 @@
 	
 	<!-- 列名 -->
 	<sql id="columns_sql" >
-    	id,version,createTime,${module.tableColumns}
+    	${module.idName},version,createTime,${module.tableColumns}
   	</sql>
 
 	<!-- 条件查询 -->
@@ -52,7 +52,7 @@
 		</#list>
 			VERSION = ${"#"}{version} + 1
 	    </set> 
-	    WHERE id = ${"#"}{id} AND version = ${"#"}{version}
+	    WHERE ${module.tableName} = ${"#"}{id} AND version = ${"#"}{version}
   	</update>
   	
   	<!-- 删除 -->

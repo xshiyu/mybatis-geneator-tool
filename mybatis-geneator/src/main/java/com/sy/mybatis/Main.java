@@ -19,7 +19,7 @@ public class Main {
 		final FreemarkerUtil freemarkerUtil = new FreemarkerUtil();
 		final Map<String, Object> module = new HashMap<>();
 		module.put("module", sqlModule);
-		freemarkerUtil.fprint("sql_mapper.xml", module, path + "/resources/", "PortalConfig.mapper.xml");
+		freemarkerUtil.fprint("sql_mapper.xml", module, path + "/resources/", "User.mapper.xml");
 	}
 
 }

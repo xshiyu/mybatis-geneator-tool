@@ -8,6 +8,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sy.mybatis.Config;
+import com.sy.mybatis.util.DbUtil;
 import com.sy.mybatis.util.ReflectionUtil;
 
 public class SqlModule {
@@ -25,19 +27,18 @@ public class SqlModule {
 	private String tableName;
 	
 	/**
+	 * ID列名
+	 */
+	private String idName;
+	
+	/**
 	 * 命名空间
 	 * class的类型
 	 */
 	private String namespace;
 	
 	/**
-	 * 带别名的列
-	 * 别名t1
-	 */
-	private String tableColumnsAlias = new String();
-	
-	/**
-	 * 不带别名的列
+	 * 列名
 	 */
 	private String tableColumns = new String();
 	
@@ -59,25 +60,34 @@ public class SqlModule {
 		className = clazz.getSimpleName();
 		final Field[] fs = clazz.getDeclaredFields();
 		for (final Field fe : fs) {
-			//是基础数据类型，具有get和set方法，并且没有@Unseen注解
+			//是基础数据类型，具有get和set方法
 			if (ReflectionUtil.isPrimitive(fe.getType()) && isHasGetAndSet(fe)) {
 				final String FeName = fe.getName();
-				final String DBName = FeName;
+				String DBName;
+				if(Config.columnRule == 1){
+					DBName = DbUtil.fieldName2DbName(FeName);
+				}else{
+					DBName = FeName;
+				}
 				propMap.put(FeName, DBName);
 			}
 		}
 		String[] arrs = clazz.getName().split("\\.");
-		namespace = arrs[0] + "." + arrs[1] + "." + arrs[2] + "." + arrs[3] + "." + arrs[4] + "." + "dao.impl." + className + "DaoImpl";
+		//namespace = arrs[0] + "." + arrs[1] + "." + arrs[2] + "." + arrs[3] + "." + arrs[4] + "." + "dao.impl." + className + "DaoImpl";
+		namespace = Config.packageName + "." + "dao.impl." + className + "DaoImpl";
 		for (final String key : propMap.keySet()) {
-			tableColumnsAlias = tableColumnsAlias + "t1." + propMap.get(key) + ",";
 			tableColumns = tableColumns + propMap.get(key) + ",";
 			tableValues = tableValues + "#{" + key + "}" + ",";
 			tableValuesItem = tableValuesItem + "#{item." + key + "}" + ",";
 		}
-		tableColumnsAlias = tableColumnsAlias.substring(0, tableColumnsAlias.length()-1);
 		tableColumns = tableColumns.substring(0, tableColumns.length()-1);
 		tableValues = tableValues.substring(0, tableValues.length()-1);
 		tableValuesItem = tableValuesItem.substring(0, tableValuesItem.length()-1);
+		if(Config.idRule == 1){
+			idName = "id";
+		}else{
+			idName = className.substring(0,1).toLowerCase()+ className.substring(1,className.length()) +"Id";
+		}
 	}
 	
 	/**
@@ -120,14 +130,6 @@ public class SqlModule {
 		this.namespace = namespace;
 	}
 
-	public String getTableColumnsAlias() {
-		return tableColumnsAlias;
-	}
-
-	public void setTableColumnsAlias(final String tableColumnsAlias) {
-		this.tableColumnsAlias = tableColumnsAlias;
-	}
-
 	public String getTableColumns() {
 		return tableColumns;
 	}
@@ -158,6 +160,14 @@ public class SqlModule {
 
 	public void setTableValuesItem(String tableValuesItem) {
 		this.tableValuesItem = tableValuesItem;
+	}
+
+	public String getIdName() {
+		return idName;
+	}
+
+	public void setIdName(String idName) {
+		this.idName = idName;
 	}
 	
 }

@@ -13,8 +13,6 @@ import freemarker.template.Template;
 /**
  * Freemarker工具类
  * 
- * @author 熊诗宇
- *
  */
 public class FreemarkerUtil {
 	

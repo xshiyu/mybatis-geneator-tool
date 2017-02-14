@@ -9,6 +9,16 @@ public class User extends BaseEntity {
 	private String password;
 	
 	private Integer age;
+	
+	private String imgPath;
+	
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
 
 	public String getUsername() {
 		return username;
