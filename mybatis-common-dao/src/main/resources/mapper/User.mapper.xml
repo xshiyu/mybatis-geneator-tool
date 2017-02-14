@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sy.mybatis.showcase.dao.impl.UserDaoImpl">
+
+	<!-- 表名 -->
+	<sql id="table">user</sql>
+	
+	<!-- 列名 -->
+	<sql id="columns_sql" >
+    	id,version,createTime,username,password,age
+  	</sql>
+
+	<!-- 条件查询 -->
+	<sql id="condition_sql">
+  		<where>
+			<if test="username != null and username != ''">
+				AND username = #{username}
+			</if> 
+			<if test="password != null and password != ''">
+				AND password = #{password}
+			</if> 
+			<if test="age != null and age != ''">
+				AND age = #{age}
+			</if> 
+  		</where>
+  	</sql>
+  	
+  	<!-- 新增 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="User">  
+    	INSERT INTO 
+    	<include refid="table" />
+    	(version,createTime,username,password,age)  
+    	VALUES(0,NOW(),#{username},#{password},#{age})
+	</insert> 
+	
+	<!-- 批量保存对象 -->
+	<insert id="batchInsert" parameterType="User">
+		INSERT INTO	<include refid="table" />
+		(version,createTime,updateTime,username,password,age)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(0,NOW(),#{item.username},#{item.password},#{item.age})
+		</foreach>
+	</insert> 
+	
+	<!-- 修改 -->
+	<update id="update" parameterType="User" >
+	    UPDATE user   
+	    <set>
+		<if test="username != null and username != ''">
+			username = #{username},
+		</if> 
+		<if test="password != null and password != ''">
+			password = #{password},
+		</if> 
+		<if test="age != null and age != ''">
+			age = #{age},
+		</if> 
+			VERSION = #{version} + 1
+	    </set> 
+	    WHERE user = #{id} AND version = #{version}
+  	</update>
+  	
+  	<!-- 删除 -->
+	<delete id="deleteById" parameterType="long">
+     	DELETE FROM <include refid="table" /> WHERE id = #{id}
+  	</delete>
+  	
+    <!-- 根据Id查询 -->
+	<select id="getById" parameterType="long" resultType="User">
+		SELECT * FROM <include refid="table" /> WHERE id = #{id}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="listBy" parameterType="map" resultType="User">
+		SELECT
+		<include refid="columns_sql" />
+		FROM <include refid="table" />
+		<include refid="condition_sql"/>
+		<if test="direction != null and direction != '' and propertie != null and propertie != ''">
+			ORDER BY #{propertie} #{direction}
+		</if>
+		<if test="offset != null and offset != '' and pageSize != null and pageSize != ''">
+			LIMIT #{offset}, #{pageSize}
+		</if>
+	</select>
+  	
+  	<!-- 总数 -->
+  	<select id="countByPageParam" parameterType="map" resultType="User">
+		SELECT
+			COUNT(1)
+		FROM <include refid="table" />
+		<include refid="condition_sql"/>
+	</select>
+	
+	<!-- ========== 基础SQL 结束 =========== -->
+	
+</mapper> 
