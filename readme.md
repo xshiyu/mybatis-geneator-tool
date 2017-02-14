@@ -36,3 +36,6 @@ public interface BaseDao<T> {
 
 ## 后期计划
 1、配置JDBC，自动连接到mysql，生成实体、dao、XML Mapper文件
+
+## github地址
+https://github.com/xshiyu/mybatis-geneator-tool
